@@ -2,6 +2,7 @@ package com.example.mvc.controller;
 
 import com.example.mvc.model.Student;
 import com.example.mvc.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +12,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class StudentController {
+    private final StudentService studentService;
 
-    @Autowired
-    StudentService studentService;
+    private final String studentIndexPage = "index";
 
-    @GetMapping("/")
+    @GetMapping(WebConstants.GET_STUDENT)
     public String getStudent(Model model) {
-        List<Student> listStudents = studentService.getStudents();
-        model.addAttribute("listStudents", listStudents);
-        return "index";
+        List<Student> students = studentService.getStudents();
+        model.addAttribute("listStudents", students);
+        return studentIndexPage;
     }
 
     @GetMapping("/student/add")
@@ -43,15 +45,15 @@ public class StudentController {
     }
 
     @PostMapping ("/students/update")
-    public String updateStudentsById(@ModelAttribute("student") Student student,RedirectAttributes redirectAttributes){
-        studentService.updateStudentsById(student);
+    public String updateStudent(@ModelAttribute("student") Student student,RedirectAttributes redirectAttributes){
+        studentService.updateStudent(student);
         redirectAttributes.addFlashAttribute("success", "Data Update Successfully");
         return "redirect:/";
     }
 
     @GetMapping("/students/delete/{id}")
     public String deleteStudentsById(@PathVariable Long id,RedirectAttributes redirectAttributes){
-        studentService.deleteStudentsById(id);
+        studentService.deleteStudentById(id);
         redirectAttributes.addFlashAttribute("success", "Data Delete Successfully");
         return "redirect:/";
     }
