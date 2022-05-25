@@ -1,4 +1,4 @@
-package com.example.restapicrud.model;
+package com.example.mvc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -23,9 +23,9 @@ public class ConfirmationToken {
 
     @ManyToOne()
     @JoinColumn(nullable = false, name = "id_user")
-    private com.example.restapicrud.model.User user;
+    private com.example.mvc.model.User user;
 
-    public ConfirmationToken(com.example.restapicrud.model.User user) {
+    public ConfirmationToken(com.example.mvc.model.User user) {
         this.user = user;
         this.token =token;
         createdDate = new Date();
@@ -59,11 +59,11 @@ public class ConfirmationToken {
         this.createdDate = createdDate;
     }
 
-    public com.example.restapicrud.model.User getUser() {
+    public com.example.mvc.model.User getUser() {
         return user;
     }
 
-    public void setUser(com.example.restapicrud.model.User user) {
+    public void setUser(com.example.mvc.model.User user) {
         this.user = user;
     }
 

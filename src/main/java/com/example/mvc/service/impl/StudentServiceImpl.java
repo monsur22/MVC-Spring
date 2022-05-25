@@ -6,6 +6,7 @@ import com.example.mvc.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +22,10 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Student storeStudent(Student student) {
         return studentRepository.save(student);
-
     }
 
     @Override

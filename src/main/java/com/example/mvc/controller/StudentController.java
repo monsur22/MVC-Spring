@@ -17,6 +17,10 @@ public class StudentController {
     private final StudentService studentService;
 
     private final String studentIndexPage = "index";
+    private final String studentAddPage = "add_student";
+    private final String studentEditPage = "edit_student";
+    private final String redirectPage = "redirect:/";
+
 
     @GetMapping(WebConstants.GET_STUDENT)
     public String getStudent(Model model) {
@@ -25,37 +29,37 @@ public class StudentController {
         return studentIndexPage;
     }
 
-    @GetMapping("/student/add")
+    @GetMapping(WebConstants.ADD_STUDENT)
     public String addStudent(Student student, Model model) {
-        return "add_student";
+        return studentAddPage;
     }
 
-    @PostMapping("/student/add")
+    @PostMapping(WebConstants.STORE_STUDENT)
     public String storeStudent(@ModelAttribute("student") Student student, RedirectAttributes redirectAttributes) {
         studentService.storeStudent(student);
         redirectAttributes.addFlashAttribute("success", "Data add Successfully");
-        return "redirect:/";
+        return redirectPage;
     }
 
-    @GetMapping("/students/{id}")
-    public String getStudentsById(@PathVariable Long id, Model model){
+    @GetMapping(WebConstants.GET_STUDENT_BY_ID)
+    public String getStudentById(@PathVariable Long id, Model model) {
         Student student = studentService.getStudentsById(id);
-        model.addAttribute("student",student);
-        return "edit_student";
+        model.addAttribute("student", student);
+        return studentEditPage;
     }
 
-    @PostMapping ("/students/update")
-    public String updateStudent(@ModelAttribute("student") Student student,RedirectAttributes redirectAttributes){
+    @PostMapping (WebConstants.UPDATE_STUDENT)
+    public String updateStudent(@ModelAttribute("student") Student student,RedirectAttributes redirectAttributes) {
         studentService.updateStudent(student);
         redirectAttributes.addFlashAttribute("success", "Data Update Successfully");
-        return "redirect:/";
+        return redirectPage;
     }
 
-    @GetMapping("/students/delete/{id}")
-    public String deleteStudentsById(@PathVariable Long id,RedirectAttributes redirectAttributes){
+    @GetMapping(WebConstants.DELETE_STUDENT_BY_ID)
+    public String deleteStudentById(@PathVariable Long id,RedirectAttributes redirectAttributes) {
         studentService.deleteStudentById(id);
         redirectAttributes.addFlashAttribute("success", "Data Delete Successfully");
-        return "redirect:/";
+        return redirectPage;
     }
 
 }

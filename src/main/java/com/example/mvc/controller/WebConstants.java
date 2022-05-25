@@ -3,4 +3,10 @@ package com.example.mvc.controller;
 public class WebConstants {
     public static final String GET_STUDENT = "/";
     public static final String ADD_STUDENT = "/student/add";
+    public static final String STORE_STUDENT = "/student/add";
+    public static final String GET_STUDENT_BY_ID = "/students/{id}";
+    public static final String UPDATE_STUDENT = "/students/update";
+    public static final String DELETE_STUDENT_BY_ID = "/students/delete/{id}";
+    public static final String SING_IN = "/singin";
+    public static final String SING_UP = "/singup";
 }
