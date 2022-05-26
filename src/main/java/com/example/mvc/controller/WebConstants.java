@@ -9,4 +9,5 @@ public class WebConstants {
     public static final String DELETE_STUDENT_BY_ID = "/students/delete/{id}";
     public static final String SING_IN = "/singin";
     public static final String SING_UP = "/singup";
+    public static final String USER_DATA_STORE = "/user/store";
 }
