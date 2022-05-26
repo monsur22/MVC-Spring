@@ -110,10 +110,12 @@
     </style>
 </head>
 <body>
+<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+<div class="alert alert-danger" role="alert" th:text="${danger}" th:if="${danger}"></div>
 <div class="signup-form">
     <form action="" method="post">
-        <h2>Sign Up</h2>
-        <p>Please fill in this form to create an account!</p>
+        <h2>Sign In</h2>
+        <p>Please fill in this form to Sing In an account!</p>
         <hr>
         <div class="form-group">
             <input type="email" class="form-control" name="email" placeholder="Email" required="required">
@@ -125,7 +127,7 @@
             <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
         </div>
     </form>
-    <div class="hint-text">Don't have an account? <a href="#">Registration here</a></div>
+    <div class="hint-text">Don't have an account? <a th:href = "@{/singup}">Registration here</a></div>
 </div>
 </body>
 </html>
