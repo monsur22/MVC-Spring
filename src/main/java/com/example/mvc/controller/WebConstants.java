@@ -11,4 +11,5 @@ public class WebConstants {
     public static final String SING_UP = "/singup";
     public static final String USER_DATA_STORE = "/user/store";
     public static final String USER_CONFIRMATION = "/user/confirmation/{token}";
+    public static final String USER_LOGIN = "/user/login";
 }

@@ -13,6 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public User userRegistration(User user) {
+
         User users = userAccountRepository.save(user);
         String randomToken = RandomString.make(60);
         ConfirmationToken verificationToken = new ConfirmationToken();
@@ -55,7 +57,26 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public Optional<ConfirmationToken> getConfirmationToken(String token){
-        return confirmationTokenRepository.findConfirmationTokenByToken(token);
+    public Boolean confirmUserAccount(String token) {
+        Optional<ConfirmationToken> confirmToken = confirmationTokenRepository.findConfirmationTokenByToken(token);
+        if (confirmToken.isPresent()) {
+            User user = confirmToken.get().getUser();
+            user.setIsActive(true);
+            userAccountRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean loginUserAccount(User user) {
+        Optional<User> getUser = userAccountRepository.findUserByEmail(user.getEmail());
+        if (getUser.isPresent() && getUser.get().getIsActive()!=false) {
+            if (Objects.equals(user.getPassword(), getUser.get().getPassword())){
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }

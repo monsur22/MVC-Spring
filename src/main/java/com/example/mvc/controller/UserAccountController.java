@@ -1,6 +1,5 @@
 package com.example.mvc.controller;
 
-import com.example.mvc.model.ConfirmationToken;
 import com.example.mvc.model.User;
 import com.example.mvc.repository.UserAccountRepository;
 import com.example.mvc.service.UserAccountService;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
-
 @Controller
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserAccountController {
@@ -25,6 +22,7 @@ public class UserAccountController {
     private final String userSignupPage = "sign_up";
     private final String userSigninPage = "sign_in";
     private final String redirectPage = "redirect:/singin";
+    private final String homePage = "redirect:/";
 
     @GetMapping(WebConstants.SING_UP)
     public String getUserSignupPage(User user, Model model) {
@@ -41,20 +39,28 @@ public class UserAccountController {
 
     @GetMapping(WebConstants.USER_CONFIRMATION)
     public String confirmUserAccount(@PathVariable String token, RedirectAttributes redirectAttributes) {
-        Optional<ConfirmationToken> confirmToken = userAccountService.getConfirmationToken(token);
-        if (confirmToken.isPresent()) {
-            User user = confirmToken.get().getUser();
-            user.setIsActive(true);
-            userAccountRepository.save(user);
-            redirectAttributes.addFlashAttribute("success","User Account Verified");
+        Boolean user = userAccountService.confirmUserAccount(token);
+        if (user) {
+            redirectAttributes.addFlashAttribute("success", "User Account Verified");
             return redirectPage;
         }
-        redirectAttributes.addFlashAttribute("danger","User Account Not Verified");
+        redirectAttributes.addFlashAttribute("danger", "User Account Not Verified");
         return redirectPage;
     }
 
     @GetMapping(WebConstants.SING_IN)
-    public String getUserSingingPage(Model model) {
+    public String getUserSingingPage(User user, Model model) {
         return userSigninPage;
+    }
+
+    @PostMapping(WebConstants.USER_LOGIN)
+    public String userLogin(@ModelAttribute("users") User user, RedirectAttributes redirectAttributes){
+        Boolean getUser = userAccountService.loginUserAccount(user);
+        if(getUser){
+            redirectAttributes.addFlashAttribute("success", "User Login Successfully");
+            return homePage;
+        }
+        redirectAttributes.addFlashAttribute("danger", "Email or Password not match");
+        return redirectPage;
     }
 }
