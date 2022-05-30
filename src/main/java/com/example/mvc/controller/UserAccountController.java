@@ -31,8 +31,12 @@ public class UserAccountController {
 
     @PostMapping(WebConstants.USER_DATA_STORE)
     public String storeUserData(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
-        userAccountService.userRegistration(user);
-        redirectAttributes.addFlashAttribute("success", "User Registration Successfully");
+        user = userAccountService.userRegistration(user);
+        if (user.getIsActive()) {
+            redirectAttributes.addFlashAttribute("message", "Email Address Already Taken");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Check Your Email");
+        }
         return redirectPage;
 
     }
@@ -54,9 +58,9 @@ public class UserAccountController {
     }
 
     @PostMapping(WebConstants.USER_LOGIN)
-    public String userLogin(@ModelAttribute("users") User user, RedirectAttributes redirectAttributes){
+    public String userLogin(@ModelAttribute("users") User user, RedirectAttributes redirectAttributes) {
         Boolean getUser = userAccountService.loginUserAccount(user);
-        if(getUser){
+        if (getUser) {
             redirectAttributes.addFlashAttribute("success", "User Login Successfully");
             return homePage;
         }

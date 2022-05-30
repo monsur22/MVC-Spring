@@ -110,7 +110,7 @@
     </style>
 </head>
 <body>
-<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+<div class="alert alert-primary" role="alert" th:text="${message}" th:if="${message}"></div>
 <div class="signup-form">
     <form th:action="@{/user/store}" th:object="${user}" method="POST">
         <h2>Sign Up</h2>
