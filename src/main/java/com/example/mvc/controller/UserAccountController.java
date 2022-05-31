@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserAccountController {
@@ -58,9 +60,10 @@ public class UserAccountController {
     }
 
     @PostMapping(WebConstants.USER_LOGIN)
-    public String userLogin(@ModelAttribute("users") User user, RedirectAttributes redirectAttributes) {
+    public String userLogin(@ModelAttribute("users") User user, HttpSession session, RedirectAttributes redirectAttributes) {
         Boolean getUser = userAccountService.loginUserAccount(user);
         if (getUser) {
+            session.setAttribute("useremail",user.getEmail());
             redirectAttributes.addFlashAttribute("success", "User Login Successfully");
             return homePage;
         }
