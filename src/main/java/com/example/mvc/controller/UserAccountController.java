@@ -70,4 +70,10 @@ public class UserAccountController {
         redirectAttributes.addFlashAttribute("danger", "Email or Password not match");
         return redirectPage;
     }
+
+    @GetMapping(WebConstants.USER_LOGOUT)
+    public String logout(HttpSession session) {
+        session.removeAttribute("useremail");
+        return redirectPage;
+    }
 }

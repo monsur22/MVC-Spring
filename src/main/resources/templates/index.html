@@ -16,9 +16,8 @@
 
     <a th:href = "@{/student/add}" class="btn btn-primary btn-sm mb-3"> Add Student </a>
     <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-    <div class="alert alert-primary"  >
-        <th:block th:text="${session.useremail }"></th:block>
-    </div>
+    <div class="alert alert-primary"  th:text="${session.useremail }" th:if="${session.useremail}" ></div>
+    <a  th:href="@{/user/logout}" th:if="${session.useremail}" class="btn btn-primary">Logout</a>
 
     <table border="1" class = "table table-striped table-responsive-md">
         <thead>
