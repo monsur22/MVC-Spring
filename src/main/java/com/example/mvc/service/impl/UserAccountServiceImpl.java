@@ -35,8 +35,18 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Transactional
     public User userRegistration(User user) {
         Optional<User> userData = userAccountRepository.findUserByEmail(user.getEmail());
+        User finalUser = user;
         userData.ifPresent(userObj -> {
             if(!userObj.getIsActive()){
+                // If user found delete the Old token
+                ConfirmationToken existToken = confirmationTokenRepository.findByUserId(userObj.getId());
+                confirmationTokenRepository.delete(existToken);
+                // Update if name and password field change again
+                User updateUser = existToken.getUser();
+                updateUser.setPassword(finalUser.getPassword());
+                updateUser.setName(finalUser.getName());
+                userAccountRepository.save(updateUser);
+                // then insert again and send email
                 ConfirmationToken verificationToken = confirmationTokenGenerate(userObj);
                 registrationEmailSend(userObj, verificationToken.getToken());
             }
@@ -72,6 +82,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             User user = confirmToken.get().getUser();
             user.setIsActive(true);
             userAccountRepository.save(user);
+            confirmationTokenRepository.delete(confirmToken.get());
             return true;
         }
         return false;
