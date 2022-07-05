@@ -13,4 +13,10 @@ public class WebConstants {
     public static final String USER_CONFIRMATION = "/user/confirmation/{token}";
     public static final String USER_LOGIN = "/user/login";
     public static final String USER_LOGOUT = "/user/logout";
+
+    // Student category
+    public static final String ADD_STUDENT_CATEGORY = "/student/category/add";
+    public static final String STORE_STUDENT_CATEGORY = "/student/category/add";
+    public static final String INDEX_STUDENT_CATEGORY = "/student/category/list";
+
 }

@@ -1,22 +1,23 @@
 package com.example.mvc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "students")
-@JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,4 +28,8 @@ public class Student {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    @ManyToOne()
+    @JoinColumn(nullable = true, name = "cat_id", referencedColumnName = "id")
+    private StuCategory stuCategory;
+
 }
